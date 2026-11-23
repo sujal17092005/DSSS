@@ -1,0 +1,2 @@
+#include <stdio.h>
+int main(){char s[200],st[200];int top=-1,i;scanf("%199s",s);for(i=0;s[i];i++){if(top>=0&&st[top]==s[i])top--;else st[++top]=s[i];}st[top+1]='\0';printf("%s\n",st);return 0;}

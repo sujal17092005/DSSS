@@ -1,0 +1,253 @@
+DATA STRUCTURES LOP - SIMPLE C PROGRAMS
+Nirma University MCA Semester-I | 6CS102CC25
+
+Each file is a standalone program. Compile using: gcc filename.c -o program
+Run: ./program (Linux/macOS) or program.exe (Windows)
+
+Programs are grouped by the LOP order. The pack includes practical scenarios and simple adaptations of the listed LeetCode concepts. Inputs are read from standard input; each file is independently compilable.
+
+Note: The source LOP lists some LeetCode tasks without complete specifications. These programs are simple educational implementations of the corresponding concepts, not guaranteed to satisfy LeetCode's exact submission interface or all constraints.
+
+======================================================================
+
+
+01_Course_List_Array.c
+----------------------
+#include <stdio.h>
+#include <string.h>
+#define MAX 100
+int main(){char courses[MAX][50];int n=0,ch,i,pos;char name[50];do{printf("\n1 Add  2 Remove  3 List  0 Exit: ");scanf("%d",&ch);if(ch==1){if(n==MAX)printf("Full\n");else{printf("Course name: ");scanf(" %49[^\n]",name);strcpy(courses[n++],name);}}else if(ch==2){printf("Position to remove (1-%d): ",n);scanf("%d",&pos);if(pos<1||pos>n)printf("Invalid\n");else{for(i=pos-1;i<n-1;i++)strcpy(courses[i],courses[i+1]);n--;}}else if(ch==3){for(i=0;i<n;i++)printf("%d. %s\n",i+1,courses[i]);}}while(ch!=0);return 0;}
+
+
+02_Two_Sum.c
+------------
+#include <stdio.h>
+int main(){int a[100],n,target,i,j;printf("Size: ");scanf("%d",&n);for(i=0;i<n;i++)scanf("%d",&a[i]);printf("Target: ");scanf("%d",&target);for(i=0;i<n;i++)for(j=i+1;j<n;j++)if(a[i]+a[j]==target){printf("Indices: %d %d\n",i,j);return 0;}printf("No pair found\n");return 0;}
+
+
+03_Search_2D_Matrix.c
+---------------------
+#include <stdio.h>
+int main(){int a[20][20],r,c,x,i,j;scanf("%d%d",&r,&c);for(i=0;i<r;i++)for(j=0;j<c;j++)scanf("%d",&a[i][j]);scanf("%d",&x);for(i=0;i<r;i++)for(j=0;j<c;j++)if(a[i][j]==x){printf("Found at %d,%d\n",i,j);return 0;}printf("Not found\n");return 0;}
+
+
+04_Balanced_Parentheses.c
+-------------------------
+#include <stdio.h>
+#include <string.h>
+int main(){char s[200];int i,count=0,ok=1;printf("Expression: ");scanf("%199s",s);for(i=0;s[i];i++){if(s[i]=='(')count++;else if(s[i]==')'){count--;if(count<0)ok=0;}}printf(ok&&count==0?"Balanced\n":"Not balanced\n");return 0;}
+
+
+05_Valid_Parentheses.c
+----------------------
+#include <stdio.h>
+#include <string.h>
+int main(){char s[200],st[200];int top=-1,i,ok=1;scanf("%199s",s);for(i=0;s[i];i++){if(s[i]=='('||s[i]=='['||s[i]=='{')st[++top]=s[i];else{if(top<0){ok=0;break;}char t=st[top--];if((s[i]==')'&&t!='(')||(s[i]==']'&&t!='[')||(s[i]=='}'&&t!='{')){ok=0;break;}}}if(top!=-1)ok=0;printf(ok?"Valid\n":"Invalid\n");return 0;}
+
+
+06_Longest_Valid_Parentheses.c
+------------------------------
+#include <stdio.h>
+#include <string.h>
+int main(){char s[200];int st[200],top=-1,i,last=-1,best=0;scanf("%199s",s);for(i=0;s[i];i++){if(s[i]=='(')st[++top]=i;else{if(top<0)last=i;else{top--;int len=i-(top>=0?st[top]:last);if(len>best)best=len;}}}printf("Longest length: %d\n",best);return 0;}
+
+
+07_Infix_Evaluation.c
+---------------------
+#include <stdio.h>
+#include <ctype.h>
+#define N 200
+int val[N],op[N],tv=-1,to=-1;void pushv(int x){val[++tv]=x;}int popv(){return val[tv--];}void pusho(int x){op[++to]=x;}int popo(){return op[to--];}int prec(int x){return x=='+'||x=='-'?1:x=='*'||x=='/'?2:0;}int main(){char s[N];int i=0,x,y,o;scanf("%199s",s);while(s[i]){if(isdigit(s[i])){x=0;while(isdigit(s[i]))x=x*10+s[i++]-'0';pushv(x);continue;}if(s[i]=='(')pusho(s[i]);else if(s[i]==')'){while(to>=0&&op[to]!='('){o=popo();y=popv();x=popv();pushv(o=='+'?x+y:o=='-'?x-y:o=='*'?x*y:x/y);}popo();}else if(s[i]=='+'||s[i]=='-'||s[i]=='*'||s[i]=='/'){while(to>=0&&op[to]!='('&&prec(op[to])>=prec(s[i])){o=popo();y=popv();x=popv();pushv(o=='+'?x+y:o=='-'?x-y:o=='*'?x*y:x/y);}pusho(s[i]);}i++;}while(to>=0){o=popo();y=popv();x=popv();pushv(o=='+'?x+y:o=='-'?x-y:o=='*'?x*y:x/y);}printf("Result=%d\n",val[tv]);return 0;}
+
+
+08_Remove_Adjacent_Duplicates.c
+-------------------------------
+#include <stdio.h>
+int main(){char s[200],st[200];int top=-1,i;scanf("%199s",s);for(i=0;s[i];i++){if(top>=0&&st[top]==s[i])top--;else st[++top]=s[i];}st[top+1]='\0';printf("%s\n",st);return 0;}
+
+
+09_Validate_Stack_Sequences.c
+-----------------------------
+#include <stdio.h>
+int main(){int n,a[100],b[100],st[100],top=-1,i,j=0;scanf("%d",&n);for(i=0;i<n;i++)scanf("%d",&a[i]);for(i=0;i<n;i++)scanf("%d",&b[i]);for(i=0;i<n;i++){st[++top]=a[i];while(top>=0&&st[top]==b[j]){top--;j++;}}printf(j==n?"Valid sequence\n":"Invalid sequence\n");return 0;}
+
+
+10_LIFO_CPU_Scheduling.c
+------------------------
+#include <stdio.h>
+int main(){int jobs[100],n,i,top=-1,ch;printf("Number of jobs: ");scanf("%d",&n);for(i=0;i<n;i++)scanf("%d",&jobs[i]);printf("Jobs executed in LIFO order: ");for(i=n-1;i>=0;i--)printf("%d ",jobs[i]);printf("\n");return 0;}
+
+
+11_Call_Center_Queue.c
+----------------------
+#include <stdio.h>
+#define N 100
+int main(){int q[N],front=0,rear=-1,ch,x;do{printf("1 Add call 2 Connect next 3 Display 0 Exit: ");scanf("%d",&ch);if(ch==1){if(rear==N-1)puts("Queue full");else{printf("Call ID: ");scanf("%d",&x);q[++rear]=x;}}else if(ch==2){if(front>rear)puts("No calls");else printf("Connecting call %d\n",q[front++]);}else if(ch==3){for(x=front;x<=rear;x++)printf("%d ",q[x]);puts("");}}while(ch);return 0;}
+
+
+12_Circular_Queue.c
+-------------------
+#include <stdio.h>
+#define N 5
+int main(){int q[N],f=-1,r=-1,ch,x;do{printf("1 Enqueue 2 Dequeue 3 Display 0 Exit: ");scanf("%d",&ch);if(ch==1){scanf("%d",&x);if((r+1)%N==f)puts("Full");else{if(f==-1)f=0;r=(r+1)%N;q[r]=x;}}else if(ch==2){if(f==-1)puts("Empty");else{printf("%d\n",q[f]);if(f==r)f=r=-1;else f=(f+1)%N;}}else if(ch==3){if(f!=-1){x=f;while(1){printf("%d ",q[x]);if(x==r)break;x=(x+1)%N;}puts("");}}}while(ch);return 0;}
+
+
+13_First_Unique_Character.c
+---------------------------
+#include <stdio.h>
+#include <string.h>
+int main(){char s[200];int count[256]={0},i;scanf("%199s",s);for(i=0;s[i];i++)count[(unsigned char)s[i]]++;for(i=0;s[i];i++)if(count[(unsigned char)s[i]]==1){printf("%c at index %d\n",s[i],i);return 0;}puts("No unique character");return 0;}
+
+
+14_Deque_Static.c
+-----------------
+#include <stdio.h>
+#define N 5
+int main(){int q[N],f=-1,r=-1,ch,x;do{printf("1 Insert left 2 Insert right 3 Delete left 4 Delete right 5 Display 0 Exit: ");scanf("%d",&ch);if(ch==1||ch==2){scanf("%d",&x);if((f==0&&r==N-1)||(f==r+1))puts("Full");else if(f==-1)f=r=0,q[f]=x;else if(ch==1){f=(f-1+N)%N;q[f]=x;}else{r=(r+1)%N;q[r]=x;}}else if(ch==3||ch==4){if(f==-1)puts("Empty");else{printf("Removed %d\n",q[ch==3?f:r]);if(f==r)f=r=-1;else if(ch==3)f=(f+1)%N;else r=(r-1+N)%N;}}else if(ch==5){if(f!=-1){x=f;while(1){printf("%d ",q[x]);if(x==r)break;x=(x+1)%N;}puts("");}}}while(ch);return 0;}
+
+
+15_Heap_Memory_Lists.c
+----------------------
+#include <stdio.h>
+#include <stdlib.h>
+struct Node{int id;struct Node*next;};struct Node*freeList=NULL,*usedList=NULL;void add(struct Node**h,int id){struct Node*n=malloc(sizeof(struct Node));n->id=id;n->next=*h;*h=n;}int removeid(struct Node**h,int id){struct Node*p=*h,*prev=NULL;while(p&&p->id!=id){prev=p;p=p->next;}if(!p)return 0;if(prev)prev->next=p->next;else *h=p->next;free(p);return 1;}void show(struct Node*h){while(h){printf("%d ",h->id);h=h->next;}puts("");}int main(){int i,ch,id;for(i=1;i<=10;i++)add(&freeList,i);do{printf("1 Allocate 2 Free 3 Show free 4 Show used 0 Exit: ");scanf("%d",&ch);if(ch==1){if(!freeList)puts("No free nodes");else{id=freeList->id;removeid(&freeList,id);add(&usedList,id);printf("Allocated node %d\n",id);}}else if(ch==2){printf("Node ID: ");scanf("%d",&id);if(removeid(&usedList,id))add(&freeList,id);else puts("Not allocated");}else if(ch==3)show(freeList);else if(ch==4)show(usedList);}while(ch);return 0;}
+
+
+16_Reverse_Linked_List.c
+------------------------
+#include <stdio.h>
+#include <stdlib.h>
+struct Node{int data;struct Node*next;};int main(){struct Node*h=NULL,*n,*p,*c,*next;int x;while(scanf("%d",&x)==1&&x!=-1){n=malloc(sizeof(*n));n->data=x;n->next=h;h=n;}printf("Reversed list: ");for(p=h;p;p=p->next)printf("%d ",p->data);puts("");return 0;}
+
+
+17_Merge_Two_Sorted_Lists.c
+---------------------------
+#include <stdio.h>
+#include <stdlib.h>
+struct N{int d;struct N*n;};struct N*add(struct N*h,int x){struct N*p=malloc(sizeof(*p));p->d=x;p->n=NULL;if(!h)return p;struct N*t=h;while(t->n)t=t->n;t->n=p;return h;}int main(){struct N*a=NULL,*b=NULL,*c=NULL,**tail=&c,*p;int x;printf("List 1 (end -1): ");while(scanf("%d",&x)&&x!=-1)a=add(a,x);printf("List 2 (end -1): ");while(scanf("%d",&x)&&x!=-1)b=add(b,x);while(a&&b){p=a->d<=b->d?a:b;if(p==a)a=a->n;else b=b->n;*tail=p;tail=&p->n;}*tail=a?a:b;for(p=c;p;p=p->n)printf("%d ",p->d);puts("");return 0;}
+
+
+18_Music_Playlist_Doubly.c
+--------------------------
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct N{char name[80];struct N*prev,*next;};struct N*head=NULL,*cur=NULL;void add(char s[]){struct N*p=malloc(sizeof(*p));strcpy(p->name,s);p->next=NULL;p->prev=NULL;if(!head)head=p;else{struct N*t=head;while(t->next)t=t->next;t->next=p;p->prev=t;}if(!cur)cur=p;}int main(){int ch;char s[80];do{printf("1 Add 2 Next 3 Previous 4 First 5 Last 6 Play current 0 Exit: ");scanf("%d",&ch);if(ch==1){scanf(" %79[^\n]",s);add(s);}else if(ch==2&&cur&&cur->next)cur=cur->next;else if(ch==3&&cur&&cur->prev)cur=cur->prev;else if(ch==4)cur=head;else if(ch==5){cur=head;if(cur)while(cur->next)cur=cur->next;}else if(ch==6&&cur)printf("Playing %s\n",cur->name);if(cur&&ch>=2&&ch<=5)printf("Current: %s\n",cur->name);}while(ch);return 0;}
+
+
+19_Design_Linked_List_Basic.c
+-----------------------------
+#include <stdio.h>
+#include <stdlib.h>
+struct N{int d;struct N*n;};struct N*h=NULL;void add(int x){struct N*p=malloc(sizeof(*p));p->d=x;p->n=NULL;if(!h)h=p;else{struct N*t=h;while(t->n)t=t->n;t->n=p;}}void show(){struct N*p=h;while(p){printf("%d ",p->d);p=p->n;}puts("");}int main(){int ch,x,pos;do{printf("1 Add 2 Delete position 3 Display 0 Exit: ");scanf("%d",&ch);if(ch==1){scanf("%d",&x);add(x);}else if(ch==2){scanf("%d",&pos);struct N*p=h,*prev=NULL;while(p&&pos-->1){prev=p;p=p->n;}if(p){if(prev)prev->n=p->n;else h=p->n;free(p);}}else if(ch==3)show();}while(ch);return 0;}
+
+
+20_Browser_History.c
+--------------------
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct N{char url[100];struct N*p,*n;};struct N*cur=NULL;int main(){int ch;char s[100];do{printf("1 Visit 2 Back 3 Forward 4 Show 0 Exit: ");scanf("%d",&ch);if(ch==1){scanf(" %99s",s);struct N*x=malloc(sizeof(*x));strcpy(x->url,s);x->p=cur;x->n=NULL;if(cur)cur->n=x;cur=x;}else if(ch==2&&cur&&cur->p)cur=cur->p;else if(ch==3&&cur&&cur->n)cur=cur->n;else if(ch==4&&cur)printf("%s\n",cur->url);}while(ch);return 0;}
+
+
+21_Reverse_String_Linked_List.c
+-------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+struct N{char c;struct N*n;};int main(){char s[200];struct N*h=NULL,*p;int i;scanf("%199s",s);for(i=0;s[i];i++){p=malloc(sizeof(*p));p->c=s[i];p->n=h;h=p;}for(p=h;p;p=p->n)putchar(p->c);puts("");return 0;}
+
+
+22_Dynamic_Circular_Queue.c
+---------------------------
+#include <stdio.h>
+#include <stdlib.h>
+struct N{int d;struct N*n;};struct N*f=NULL,*r=NULL;void enq(int x){struct N*p=malloc(sizeof(*p));p->d=x;if(!f)f=r=p,p->n=p;else p->n=f,r->n=p,r=p;}void deq(){if(!f)puts("Empty");else{printf("%d\n",f->d);if(f==r)f=r=NULL;else f=f->n,r->n=f;}}int main(){int ch,x;do{printf("1 Enqueue 2 Dequeue 3 Display 0 Exit: ");scanf("%d",&ch);if(ch==1){scanf("%d",&x);enq(x);}else if(ch==2)deq();else if(ch==3&&f){struct N*p=f;do{printf("%d ",p->d);p=p->n;}while(p!=f);puts("");}}while(ch);return 0;}
+
+
+23_BST_Dictionary.c
+-------------------
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct N{char w[40],meaning[100];struct N*l,*r;};struct N*insert(struct N*t,char w[],char m[]){if(!t){t=malloc(sizeof(*t));strcpy(t->w,w);strcpy(t->meaning,m);t->l=t->r=NULL;}else if(strcmp(w,t->w)<0)t->l=insert(t->l,w,m);else if(strcmp(w,t->w)>0)t->r=insert(t->r,w,m);else strcpy(t->meaning,m);return t;}void print(struct N*t,int rev){if(!t)return;if(rev){print(t->r,rev);printf("%s: %s\n",t->w,t->meaning);print(t->l,rev);}else{print(t->l,rev);printf("%s: %s\n",t->w,t->meaning);print(t->r,rev);}}struct N*search(struct N*t,char w[]){while(t&&strcmp(w,t->w))t=strcmp(w,t->w)<0?t->l:t->r;return t;}int main(){struct N*root=NULL,*p;int ch;char w[40],m[100];do{printf("1 Add 2 Search 3 Ascending 4 Descending 0 Exit: ");scanf("%d",&ch);if(ch==1){scanf(" %39s %99[^\n]",w,m);root=insert(root,w,m);}else if(ch==2){scanf("%39s",w);p=search(root,w);if(p)printf("%s\n",p->meaning);else puts("Not found");}else if(ch==3)print(root,0);else if(ch==4)print(root,1);}while(ch);return 0;}
+
+
+24_Balance_BST_From_Sorted_Array.c
+----------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+struct N{int d;struct N*l,*r;};struct N*build(int a[],int lo,int hi){if(lo>hi)return NULL;int m=(lo+hi)/2;struct N*p=malloc(sizeof(*p));p->d=a[m];p->l=build(a,lo,m-1);p->r=build(a,m+1,hi);return p;}void inorder(struct N*t){if(t){inorder(t->l);printf("%d ",t->d);inorder(t->r);}}int main(){int a[100],n,i;scanf("%d",&n);for(i=0;i<n;i++)scanf("%d",&a[i]);struct N*r=build(a,0,n-1);inorder(r);puts("");return 0;}
+
+
+25_Minimum_Absolute_BST_Difference.c
+------------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+struct N{int d;struct N*l,*r;};int prev=-1,best=INT_MAX;void inorder(struct N*t){if(!t)return;inorder(t->l);if(prev!=-1&&t->d-prev<best)best=t->d-prev;prev=t->d;inorder(t->r);}struct N*add(struct N*t,int x){if(!t){t=malloc(sizeof(*t));t->d=x;t->l=t->r=NULL;}else if(x<t->d)t->l=add(t->l,x);else t->r=add(t->r,x);return t;}int main(){struct N*r=NULL;int n,x,i;scanf("%d",&n);for(i=0;i<n;i++){scanf("%d",&x);r=add(r,x);}inorder(r);printf("Minimum difference=%d\n",best);return 0;}
+
+
+26_Graph_Adjacency_Matrix.c
+---------------------------
+#include <stdio.h>
+int main(){int a[5][5]={{0}},i,j;char edges[][2]={{0,1},{0,2},{1,2},{1,3},{2,3},{3,4},{4,0}};for(i=0;i<7;i++){int x=edges[i][0],y=edges[i][1];a[x][y]=a[y][x]=1;}puts("Undirected graph matrix:");for(i=0;i<5;i++){for(j=0;j<5;j++)printf("%d ",a[i][j]);puts("");}return 0;}
+
+
+27_Find_Center_Star_Graph.c
+---------------------------
+#include <stdio.h>
+int main(){int n,e,a[100],b[100],i,deg[100]={0};scanf("%d%d",&n,&e);for(i=0;i<e;i++){scanf("%d%d",&a[i],&b[i]);deg[a[i]]++;deg[b[i]]++;}for(i=0;i<n;i++)if(deg[i]==n-1){printf("Center: %d\n",i);return 0;}puts("No star center");return 0;}
+
+
+28_Path_Exists_Graph.c
+----------------------
+#include <stdio.h>
+int a[100][100],seen[100],n;void dfs(int v){int i;seen[v]=1;for(i=0;i<n;i++)if(a[v][i]&&!seen[i])dfs(i);}int main(){int e,i,x,y,s,d;scanf("%d%d",&n,&e);for(i=0;i<e;i++){scanf("%d%d",&x,&y);a[x][y]=a[y][x]=1;}scanf("%d%d",&s,&d);dfs(s);printf(seen[d]?"Path exists\n":"No path\n");return 0;}
+
+
+29_Binary_Search_Descending.c
+-----------------------------
+#include <stdio.h>
+int main(){int a[100],n,x,l=0,r,m,i;scanf("%d",&n);for(i=0;i<n;i++)scanf("%d",&a[i]);scanf("%d",&x);r=n-1;while(l<=r){m=(l+r)/2;if(a[m]==x){printf("Index %d\n",m);return 0;}if(a[m]>x)l=m+1;else r=m-1;}puts("-1");return 0;}
+
+
+30_Search_Rotated_Array.c
+-------------------------
+#include <stdio.h>
+int main(){int a[100],n,x,l=0,r,m,i;scanf("%d",&n);for(i=0;i<n;i++)scanf("%d",&a[i]);scanf("%d",&x);r=n-1;while(l<=r){m=(l+r)/2;if(a[m]==x){printf("%d\n",m);return 0;}if(a[l]<=a[m]){if(a[l]<=x&&x<a[m])r=m-1;else l=m+1;}else{if(a[m]<x&&x<=a[r])l=m+1;else r=m-1;}}puts("-1");return 0;}
+
+
+31_Minimum_Rotated_Array_Duplicates.c
+-------------------------------------
+#include <stdio.h>
+int main(){int a[100],n,l=0,r,m,i;scanf("%d",&n);for(i=0;i<n;i++)scanf("%d",&a[i]);r=n-1;while(l<r){m=(l+r)/2;if(a[m]<a[r])r=m;else if(a[m]>a[r])l=m+1;else r--;}printf("Minimum=%d\n",a[l]);return 0;}
+
+
+32_Bubble_Selection_Sort.c
+--------------------------
+#include <stdio.h>
+int main(){int a[100],n,i,j,t;scanf("%d",&n);for(i=0;i<n;i++)scanf("%d",&a[i]);for(i=0;i<n-1;i++)for(j=0;j<n-1-i;j++)if(a[j]>a[j+1])t=a[j],a[j]=a[j+1],a[j+1]=t;printf("Bubble: ");for(i=0;i<n;i++)printf("%d ",a[i]);puts("");for(i=0;i<n-1;i++){int min=i;for(j=i+1;j<n;j++)if(a[j]<a[min])min=j;t=a[i];a[i]=a[min];a[min]=t;}printf("Selection: ");for(i=0;i<n;i++)printf("%d ",a[i]);puts("");return 0;}
+
+
+33_Merge_Sorted_Arrays.c
+------------------------
+#include <stdio.h>
+int main(){int a[100],b[100],c[200],m,n,i=0,j=0,k=0;scanf("%d",&m);for(i=0;i<m;i++)scanf("%d",&a[i]);scanf("%d",&n);for(i=0;i<n;i++)scanf("%d",&b[i]);i=0;while(i<m&&j<n)c[k++]=a[i]<=b[j]?a[i++]:b[j++];while(i<m)c[k++]=a[i++];while(j<n)c[k++]=b[j++];for(i=0;i<k;i++)printf("%d ",c[i]);puts("");return 0;}
+
+
+34_Remove_Duplicates_Sorted_Array.c
+-----------------------------------
+#include <stdio.h>
+int main(){int a[100],n,i,k=0;scanf("%d",&n);for(i=0;i<n;i++)scanf("%d",&a[i]);for(i=0;i<n;i++)if(i==0||a[i]!=a[i-1])a[k++]=a[i];printf("Unique count=%d\n",k);for(i=0;i<k;i++)printf("%d ",a[i]);puts("");return 0;}
+
+
+35_Merge_Sort.c
+---------------
+#include <stdio.h>
+void merge(int a[],int l,int m,int r){int t[100],i=l,j=m+1,k=0;while(i<=m&&j<=r)t[k++]=a[i]<=a[j]?a[i++]:a[j++];while(i<=m)t[k++]=a[i++];while(j<=r)t[k++]=a[j++];for(i=l,k=0;i<=r;i++)a[i]=t[k++];}void sort(int a[],int l,int r){if(l<r){int m=(l+r)/2;sort(a,l,m);sort(a,m+1,r);merge(a,l,m,r);}}int main(){int a[100],n,i;scanf("%d",&n);for(i=0;i<n;i++)scanf("%d",&a[i]);sort(a,0,n-1);for(i=0;i<n;i++)printf("%d ",a[i]);puts("");return 0;}
+
+
+36_Heap_Sort.c
+--------------
+#include <stdio.h>
+void heapify(int a[],int n,int i){int largest=i,l=2*i+1,r=2*i+2,t;if(l<n&&a[l]>a[largest])largest=l;if(r<n&&a[r]>a[largest])largest=r;if(largest!=i){t=a[i];a[i]=a[largest];a[largest]=t;heapify(a,n,largest);}}int main(){int a[100],n,i,t;scanf("%d",&n);for(i=0;i<n;i++)scanf("%d",&a[i]);for(i=n/2-1;i>=0;i--)heapify(a,n,i);for(i=n-1;i>0;i--){t=a[0];a[0]=a[i];a[i]=t;heapify(a,i,0);}for(i=0;i<n;i++)printf("%d ",a[i]);puts("");return 0;}

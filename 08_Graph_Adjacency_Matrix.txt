@@ -1,0 +1,18 @@
+#include <stdio.h>
+#define MAX 20
+int main() {
+    int a[MAX][MAX]={0},n,e,i,u,v,j;
+    printf("Vertices (1-20) and edges: "); scanf("%d%d",&n,&e);
+    if(n<1 || n>MAX || e<0) return 0;
+    printf("Enter edges as pairs of vertex numbers (0 to %d):\n",n-1);
+    for(i=0;i<e;i++) {
+        scanf("%d%d",&u,&v);
+        if(u>=0&&u<n&&v>=0&&v<n) a[u][v]=a[v][u]=1;
+    }
+    printf("Adjacency matrix:\n");
+    for(i=0;i<n;i++) {
+        for(j=0;j<n;j++) printf("%d ",a[i][j]);
+        printf("\n");
+    }
+    return 0;
+}

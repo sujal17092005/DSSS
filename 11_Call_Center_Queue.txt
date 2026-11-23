@@ -1,0 +1,3 @@
+#include <stdio.h>
+#define N 100
+int main(){int q[N],front=0,rear=-1,ch,x;do{printf("1 Add call 2 Connect next 3 Display 0 Exit: ");scanf("%d",&ch);if(ch==1){if(rear==N-1)puts("Queue full");else{printf("Call ID: ");scanf("%d",&x);q[++rear]=x;}}else if(ch==2){if(front>rear)puts("No calls");else printf("Connecting call %d\n",q[front++]);}else if(ch==3){for(x=front;x<=rear;x++)printf("%d ",q[x]);puts("");}}while(ch);return 0;}

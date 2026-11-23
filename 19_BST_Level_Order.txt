@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node { int data; struct Node *left, *right; };
+struct Node *insert(struct Node *r, int x) {
+    if (!r) {
+        r = malloc(sizeof(*r));
+        if (!r) exit(1);
+        r->data = x; r->left = r->right = NULL;
+    } else if (x < r->data) r->left = insert(r->left, x);
+    else if (x > r->data) r->right = insert(r->right, x);
+    return r;
+}
+void levelOrder(struct Node *root, int n) {
+    if (!root) return;
+    struct Node **queue = malloc((size_t)n * sizeof(*queue));
+    if (!queue) exit(1);
+    int front = 0, rear = 0;
+    queue[rear++] = root;
+    while (front < rear) {
+        struct Node *cur = queue[front++];
+        printf("%d ", cur->data);
+        if (cur->left) queue[rear++] = cur->left;
+        if (cur->right) queue[rear++] = cur->right;
+    }
+    free(queue);
+}
+void freeTree(struct Node *r) {
+    if (!r) return;
+    freeTree(r->left); freeTree(r->right); free(r);
+}
+int main(void) {
+    struct Node *root = NULL;
+    int n, x;
+    printf("Number of nodes: ");
+    if (scanf("%d", &n) != 1 || n < 0) return 1;
+    printf("Enter values: ");
+    for (int i = 0; i < n; i++) {
+        if (scanf("%d", &x) != 1) { freeTree(root); return 1; }
+        root = insert(root, x);
+    }
+    printf("Level order: ");
+    levelOrder(root, n);
+    printf("\n");
+    freeTree(root);
+    return 0;
+}

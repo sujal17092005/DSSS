@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node { int data; struct Node *prev,*next; };
+int main() {
+    struct Node *head=NULL,*tail=NULL,*p,*temp;
+    int n,x,i;
+    printf("How many nodes? "); scanf("%d",&n);
+    for(i=0;i<n;i++) {
+        printf("Value: "); scanf("%d",&x);
+        p=malloc(sizeof(struct Node)); if(!p) return 1;
+        p->data=x; p->prev=tail; p->next=NULL;
+        if(tail) tail->next=p; else head=p;
+        tail=p;
+    }
+    printf("Forward: ");
+    for(p=head;p;p=p->next) printf("%d ",p->data);
+    printf("\nBackward: ");
+    for(p=tail;p;p=p->prev) printf("%d ",p->data);
+    printf("\n");
+    p=head;
+    while(p) { temp=p->next; free(p); p=temp; }
+    return 0;
+}

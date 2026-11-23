@@ -1,0 +1,17 @@
+#include <stdio.h>
+#define MAX 5
+int q[MAX], front=0, rear=-1;
+void enqueue(int x) { if(rear==MAX-1) printf("Queue full\n"); else q[++rear]=x; }
+void dequeue() { if(front>rear) printf("Queue empty\n"); else printf("Removed: %d\n",q[front++]); }
+void display() { int i; for(i=front;i<=rear;i++) printf("%d ",q[i]); printf("\n"); }
+int main() {
+    int ch,x;
+    do {
+        printf("1 Enqueue  2 Dequeue  3 Display  0 Exit: ");
+        if(scanf("%d",&ch)!=1) break;
+        if(ch==1) { printf("Value: "); scanf("%d",&x); enqueue(x); }
+        else if(ch==2) dequeue();
+        else if(ch==3) display();
+    } while(ch!=0);
+    return 0;
+}

@@ -1,0 +1,2 @@
+#include <stdio.h>
+int main(){int n,a[100],b[100],st[100],top=-1,i,j=0;scanf("%d",&n);for(i=0;i<n;i++)scanf("%d",&a[i]);for(i=0;i<n;i++)scanf("%d",&b[i]);for(i=0;i<n;i++){st[++top]=a[i];while(top>=0&&st[top]==b[j]){top--;j++;}}printf(j==n?"Valid sequence\n":"Invalid sequence\n");return 0;}

@@ -1,0 +1,4 @@
+#include <stdio.h>
+#include <ctype.h>
+#define N 200
+int val[N],op[N],tv=-1,to=-1;void pushv(int x){val[++tv]=x;}int popv(){return val[tv--];}void pusho(int x){op[++to]=x;}int popo(){return op[to--];}int prec(int x){return x=='+'||x=='-'?1:x=='*'||x=='/'?2:0;}int main(){char s[N];int i=0,x,y,o;scanf("%199s",s);while(s[i]){if(isdigit(s[i])){x=0;while(isdigit(s[i]))x=x*10+s[i++]-'0';pushv(x);continue;}if(s[i]=='(')pusho(s[i]);else if(s[i]==')'){while(to>=0&&op[to]!='('){o=popo();y=popv();x=popv();pushv(o=='+'?x+y:o=='-'?x-y:o=='*'?x*y:x/y);}popo();}else if(s[i]=='+'||s[i]=='-'||s[i]=='*'||s[i]=='/'){while(to>=0&&op[to]!='('&&prec(op[to])>=prec(s[i])){o=popo();y=popv();x=popv();pushv(o=='+'?x+y:o=='-'?x-y:o=='*'?x*y:x/y);}pusho(s[i]);}i++;}while(to>=0){o=popo();y=popv();x=popv();pushv(o=='+'?x+y:o=='-'?x-y:o=='*'?x*y:x/y);}printf("Result=%d\n",val[tv]);return 0;}

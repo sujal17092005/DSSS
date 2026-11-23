@@ -1,0 +1,3 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct N{int d;struct N*n;};struct N*add(struct N*h,int x){struct N*p=malloc(sizeof(*p));p->d=x;p->n=NULL;if(!h)return p;struct N*t=h;while(t->n)t=t->n;t->n=p;return h;}int main(){struct N*a=NULL,*b=NULL,*c=NULL,**tail=&c,*p;int x;printf("List 1 (end -1): ");while(scanf("%d",&x)&&x!=-1)a=add(a,x);printf("List 2 (end -1): ");while(scanf("%d",&x)&&x!=-1)b=add(b,x);while(a&&b){p=a->d<=b->d?a:b;if(p==a)a=a->n;else b=b->n;*tail=p;tail=&p->n;}*tail=a?a:b;for(p=c;p;p=p->n)printf("%d ",p->d);puts("");return 0;}

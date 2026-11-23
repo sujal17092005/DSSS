@@ -1,0 +1,4 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct N{char url[100];struct N*p,*n;};struct N*cur=NULL;int main(){int ch;char s[100];do{printf("1 Visit 2 Back 3 Forward 4 Show 0 Exit: ");scanf("%d",&ch);if(ch==1){scanf(" %99s",s);struct N*x=malloc(sizeof(*x));strcpy(x->url,s);x->p=cur;x->n=NULL;if(cur)cur->n=x;cur=x;}else if(ch==2&&cur&&cur->p)cur=cur->p;else if(ch==3&&cur&&cur->n)cur=cur->n;else if(ch==4&&cur)printf("%s\n",cur->url);}while(ch);return 0;}

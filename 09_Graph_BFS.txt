@@ -1,0 +1,23 @@
+#include <stdio.h>
+#define MAX 20
+int a[MAX][MAX]={0},visited[MAX]={0},q[MAX];
+int main() {
+    int n,e,i,u,v,start,front=0,rear=0;
+    printf("Vertices and edges: "); scanf("%d%d",&n,&e);
+    if(n<1||n>MAX||e<0) return 0;
+    for(i=0;i<e;i++) {
+        scanf("%d%d",&u,&v);
+        if(u>=0&&u<n&&v>=0&&v<n) a[u][v]=a[v][u]=1;
+    }
+    printf("Start vertex (0 to %d): ",n-1); scanf("%d",&start);
+    if(start<0||start>=n) return 0;
+    visited[start]=1; q[rear++]=start;
+    printf("BFS: ");
+    while(front<rear) {
+        u=q[front++]; printf("%d ",u);
+        for(v=0;v<n;v++) if(a[u][v]&&!visited[v]) {
+            visited[v]=1; q[rear++]=v;
+        }
+    }
+    return 0;
+}

@@ -1,0 +1,4 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+struct N{int d;struct N*l,*r;};int prev=-1,best=INT_MAX;void inorder(struct N*t){if(!t)return;inorder(t->l);if(prev!=-1&&t->d-prev<best)best=t->d-prev;prev=t->d;inorder(t->r);}struct N*add(struct N*t,int x){if(!t){t=malloc(sizeof(*t));t->d=x;t->l=t->r=NULL;}else if(x<t->d)t->l=add(t->l,x);else t->r=add(t->r,x);return t;}int main(){struct N*r=NULL;int n,x,i;scanf("%d",&n);for(i=0;i<n;i++){scanf("%d",&x);r=add(r,x);}inorder(r);printf("Minimum difference=%d\n",best);return 0;}

@@ -1,0 +1,3 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct N{int d;struct N*n;};struct N*f=NULL,*r=NULL;void enq(int x){struct N*p=malloc(sizeof(*p));p->d=x;if(!f)f=r=p,p->n=p;else p->n=f,r->n=p,r=p;}void deq(){if(!f)puts("Empty");else{printf("%d\n",f->d);if(f==r)f=r=NULL;else f=f->n,r->n=f;}}int main(){int ch,x;do{printf("1 Enqueue 2 Dequeue 3 Display 0 Exit: ");scanf("%d",&ch);if(ch==1){scanf("%d",&x);enq(x);}else if(ch==2)deq();else if(ch==3&&f){struct N*p=f;do{printf("%d ",p->d);p=p->n;}while(p!=f);puts("");}}while(ch);return 0;}

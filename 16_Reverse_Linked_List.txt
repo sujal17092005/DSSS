@@ -1,0 +1,3 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node{int data;struct Node*next;};int main(){struct Node*h=NULL,*n,*p,*c,*next;int x;while(scanf("%d",&x)==1&&x!=-1){n=malloc(sizeof(*n));n->data=x;n->next=h;h=n;}printf("Reversed list: ");for(p=h;p;p=p->next)printf("%d ",p->data);puts("");return 0;}

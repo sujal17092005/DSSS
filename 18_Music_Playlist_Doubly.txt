@@ -1,0 +1,4 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct N{char name[80];struct N*prev,*next;};struct N*head=NULL,*cur=NULL;void add(char s[]){struct N*p=malloc(sizeof(*p));strcpy(p->name,s);p->next=NULL;p->prev=NULL;if(!head)head=p;else{struct N*t=head;while(t->next)t=t->next;t->next=p;p->prev=t;}if(!cur)cur=p;}int main(){int ch;char s[80];do{printf("1 Add 2 Next 3 Previous 4 First 5 Last 6 Play current 0 Exit: ");scanf("%d",&ch);if(ch==1){scanf(" %79[^\n]",s);add(s);}else if(ch==2&&cur&&cur->next)cur=cur->next;else if(ch==3&&cur&&cur->prev)cur=cur->prev;else if(ch==4)cur=head;else if(ch==5){cur=head;if(cur)while(cur->next)cur=cur->next;}else if(ch==6&&cur)printf("Playing %s\n",cur->name);if(cur&&ch>=2&&ch<=5)printf("Current: %s\n",cur->name);}while(ch);return 0;}

@@ -1,0 +1,2 @@
+#include <stdio.h>
+int main(){int a[5][5]={{0}},i,j;char edges[][2]={{0,1},{0,2},{1,2},{1,3},{2,3},{3,4},{4,0}};for(i=0;i<7;i++){int x=edges[i][0],y=edges[i][1];a[x][y]=a[y][x]=1;}puts("Undirected graph matrix:");for(i=0;i<5;i++){for(j=0;j<5;j++)printf("%d ",a[i][j]);puts("");}return 0;}
